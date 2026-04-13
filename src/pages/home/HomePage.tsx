@@ -2,9 +2,9 @@ import {
   HeroSection,
   HowItWorksSection,
   MarketplacesStrip,
-  PageFooter,
   PageHeader,
 } from '../../widgets/home-page';
+import { PageFooter } from '../../widgets/page-footer';
 
 export const HomePage = () => {
   return (
