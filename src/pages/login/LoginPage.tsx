@@ -1,6 +1,17 @@
+import type { FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { authorizeClient } from '../../app/auth';
 import { PageFooter } from '../../widgets/page-footer';
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    authorizeClient();
+    navigate('/profile', { replace: true });
+  };
+
   return (
     <main className="min-h-screen bg-[var(--color-page)] text-white">
       <div className="flex min-h-screen flex-col">
@@ -23,7 +34,7 @@ export const LoginPage = () => {
                   </p>
                 </div>
 
-                <form className="mt-8 space-y-5">
+                <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
                   <div>
                     <label
                       className="mb-2 block text-xs font-semibold tracking-[0.04em] text-white/70"
@@ -61,6 +72,13 @@ export const LoginPage = () => {
                     Авторизоваться
                   </button>
 
+                  <Link
+                    className="inline-block text-xs text-white/42 transition hover:text-white"
+                    to="/register"
+                  >
+                    Создать аккаунт
+                  </Link>
+                  <br />
                   <a className="inline-block text-xs text-white/42 transition hover:text-white" href="/">
                     Забыли свой пароль
                   </a>
