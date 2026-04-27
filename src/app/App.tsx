@@ -4,6 +4,7 @@ import { HomePage } from '../pages/home';
 import { LoginPage } from '../pages/login';
 import { ProfilePage } from '../pages/profile';
 import { RegisterPage } from '../pages/register';
+import { SearchPage } from '../pages/search';
 import { isAuthorized } from './auth';
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
@@ -18,6 +19,7 @@ export const App = () => {
   return (
     <Routes>
       <Route element={<HomePage />} path="/" />
+      <Route element={<SearchPage />} path="/search" />
       <Route element={<LoginPage />} path="/login" />
       <Route element={<RegisterPage />} path="/register" />
       <Route
