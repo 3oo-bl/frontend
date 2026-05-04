@@ -4,6 +4,10 @@ import { logoutClient } from '../../app/auth';
 export const ProfilePage = () => {
   const navigate = useNavigate();
 
+  const handleGoHome = () => {
+    navigate('/', { replace: true });
+  };
+
   const handleLogout = () => {
     logoutClient();
     navigate('/login', { replace: true });
@@ -27,13 +31,22 @@ export const ProfilePage = () => {
               </p>
             </div>
 
-            <button
-              className="inline-flex h-11 items-center justify-center rounded-full border border-[#18693a] px-6 text-sm font-semibold text-white transition hover:bg-[#18693a]"
-              onClick={handleLogout}
-              type="button"
-            >
-              Выйти
-            </button>
+            <div className="flex flex-wrap gap-3">
+              <button
+                className="inline-flex h-11 items-center justify-center rounded-full border border-white/18 px-6 text-sm font-semibold text-white transition hover:border-white/35 hover:bg-white/8"
+                onClick={handleGoHome}
+                type="button"
+              >
+                На главную
+              </button>
+              <button
+                className="inline-flex h-11 items-center justify-center rounded-full border border-[#18693a] px-6 text-sm font-semibold text-white transition hover:bg-[#18693a]"
+                onClick={handleLogout}
+                type="button"
+              >
+                Выйти
+              </button>
+            </div>
           </div>
         </div>
       </section>

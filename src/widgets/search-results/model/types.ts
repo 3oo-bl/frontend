@@ -1,26 +1,19 @@
-export type StorageOption = {
-  id: string;
-  label: string;
-  isActive?: boolean;
-};
-
-export type MarketplaceOffer = {
-  marketplace: string;
-  price: string;
-  href: string;
-};
-
 export type SearchProduct = {
   id: string;
-  title: string;
-  storageLabel: string;
-  specs: string[];
-  storageOptions: StorageOption[];
-  offers: MarketplaceOffer[];
-  priceRange: {
-    from: string;
-    to: string;
-  };
+  name: string;
+  cost: string;
+  costWithDiscount: string;
+  category: string | null;
+  subcategory: string | null;
+  cashback: number;
+  brand: string | null;
+  seller: string | null;
+  sellerRating: number | null;
+  rating: number | null;
+  reviews: number | null;
+  remaining: number | null;
+  link: string;
+  imageLink: string | null;
 };
 
 export type SearchFilterOption = {

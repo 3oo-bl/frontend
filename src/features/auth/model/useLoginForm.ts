@@ -2,40 +2,29 @@ import type { ChangeEvent, FormEvent } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authorizeClient } from '@/app/auth';
-import { registerUser } from '../api/registerUser';
+import { loginUser } from '../api/loginUser';
 import { extractPersonalToken } from '../api/shared';
 
-const DEFAULT_PREFERENCES = {
-  id: 0,
-  price: 0,
-  delivery: 0,
-  rating: 0,
-} as const;
+const DEFAULT_LOGIN_ERROR = 'Не удалось авторизоваться';
 
-const DEFAULT_ERROR_MESSAGE = 'Не удалось зарегистрироваться';
-
-type RegisterFormValues = {
-  name: string;
+type LoginFormValues = {
   email: string;
   password: string;
-  confirmPassword: string;
 };
 
-const INITIAL_FORM_VALUES: RegisterFormValues = {
-  name: '',
+const INITIAL_FORM_VALUES: LoginFormValues = {
   email: '',
   password: '',
-  confirmPassword: '',
 };
 
-export const useRegisterForm = () => {
+export const useLoginForm = () => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState(INITIAL_FORM_VALUES);
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFieldChange = (
-    field: keyof RegisterFormValues,
+    field: keyof LoginFormValues,
     event: ChangeEvent<HTMLInputElement>,
   ) => {
     const { value } = event.currentTarget;
@@ -57,22 +46,13 @@ export const useRegisterForm = () => {
       return;
     }
 
-    if (formValues.password !== formValues.confirmPassword) {
-      setErrorMessage('Пароли не совпадают');
-      return;
-    }
-
     setIsSubmitting(true);
     setErrorMessage('');
 
     try {
-      const response = await registerUser({
-        id: 0,
-        name: formValues.name.trim(),
+      const response = await loginUser({
         email: formValues.email.trim(),
         password: formValues.password,
-        preferencesId: 0,
-        preferences: DEFAULT_PREFERENCES,
       });
 
       authorizeClient(extractPersonalToken(response));
@@ -81,7 +61,7 @@ export const useRegisterForm = () => {
       setErrorMessage(
         error instanceof Error && error.message
           ? error.message
-          : DEFAULT_ERROR_MESSAGE,
+          : DEFAULT_LOGIN_ERROR,
       );
     } finally {
       setIsSubmitting(false);

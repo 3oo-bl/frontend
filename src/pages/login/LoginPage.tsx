@@ -1,16 +1,10 @@
-import type { FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { authorizeClient } from '../../app/auth';
-import { PageFooter } from '../../widgets/page-footer';
+import { Link } from 'react-router-dom';
+import { useLoginForm } from '@/features/auth';
+import { PageFooter } from '@/widgets/page-footer';
 
 export const LoginPage = () => {
-  const navigate = useNavigate();
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    authorizeClient();
-    navigate('/profile', { replace: true });
-  };
+  const { errorMessage, formValues, handleFieldChange, handleSubmit, isSubmitting } =
+    useLoginForm();
 
   return (
     <main className="min-h-screen bg-[var(--color-page)] text-white">
@@ -38,15 +32,20 @@ export const LoginPage = () => {
                   <div>
                     <label
                       className="mb-2 block text-xs font-semibold tracking-[0.04em] text-white/70"
-                      htmlFor="login"
+                      htmlFor="email"
                     >
-                      Введите свой адрес электронной почты или телефон
+                      Введите свой адрес электронной почты
                     </label>
                     <input
                       className="h-12 w-full rounded-full border border-black/15 bg-white px-5 text-sm text-[#2f2f2f] outline-none placeholder:text-[#9c9c9c] focus:border-lime-300"
-                      id="login"
+                      disabled={isSubmitting}
+                      id="email"
+                      name="email"
+                      onChange={(event) => handleFieldChange('email', event)}
                       placeholder="vocalovdev@gmail.com"
-                      type="text"
+                      type="email"
+                      value={formValues.email}
+                      required
                     />
                   </div>
 
@@ -59,17 +58,32 @@ export const LoginPage = () => {
                     </label>
                     <input
                       className="h-12 w-full rounded-full border border-black/15 bg-white px-5 text-sm text-[#2f2f2f] outline-none placeholder:text-[#9c9c9c] focus:border-lime-300"
+                      disabled={isSubmitting}
                       id="password"
+                      name="password"
+                      onChange={(event) => handleFieldChange('password', event)}
                       placeholder="••••"
                       type="password"
+                      value={formValues.password}
+                      required
                     />
                   </div>
 
+                  {errorMessage ? (
+                    <p
+                      aria-live="polite"
+                      className="text-sm leading-6 text-[#ff8c82]"
+                    >
+                      {errorMessage}
+                    </p>
+                  ) : null}
+
                   <button
-                    className="flex h-12 w-full items-center justify-center rounded-full border border-[#18693a] text-sm font-semibold text-white transition hover:bg-[#18693a]"
+                    className="flex h-12 w-full items-center justify-center rounded-full border border-[#18693a] text-sm font-semibold text-white transition hover:bg-[#18693a] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-transparent"
+                    disabled={isSubmitting}
                     type="submit"
                   >
-                    Авторизоваться
+                    {isSubmitting ? 'Входим...' : 'Авторизоваться'}
                   </button>
 
                   <Link
@@ -79,7 +93,10 @@ export const LoginPage = () => {
                     Создать аккаунт
                   </Link>
                   <br />
-                  <a className="inline-block text-xs text-white/42 transition hover:text-white" href="/">
+                  <a
+                    className="inline-block text-xs text-white/42 transition hover:text-white"
+                    href="/"
+                  >
                     Забыли свой пароль
                   </a>
                 </form>
